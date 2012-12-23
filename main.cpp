@@ -42,17 +42,16 @@ float matchDescriptors(cv::Mat descriptors1, cv::Mat descriptors2) {
 
 	//search best match
 	double minDist = 100;
-	for (int i = 0; i < matches.size(); i++)
-	{ 
-		if(matches[i].distance < minDist) minDist = matches[i].distance;
+	for( int i = 0; i < matches.size(); i++ ) { 
+		if( matches[i].distance < minDist ) {
+			minDist = matches[i].distance;
+		}
 	}
 
 	//Calculate result. Only good matches are considered.
 	int numGoodMatches = 0;
-	for( int i = 0; i < matches.size(); i++ )
-	{ 
-		if(matches[i].distance <= 2 * minDist)
-		{
+	for( int i = 0; i < matches.size(); i++ ) { 
+		if( matches[i].distance <= 2 * minDist ) {
 			result += matches[i].distance * matches[i].distance;
 			numGoodMatches++;
 		}
@@ -72,8 +71,8 @@ float matchDescriptors(cv::Mat descriptors1, cv::Mat descriptors2) {
  *		0 means that both images are identical. The higher the
  *		distance, the lower the similarity of the images.
  */
-double compareImagesSURF(cv::Mat &image1, cv::Mat &image2, double ht)
-{
+double compareImagesSURF(cv::Mat &image1, cv::Mat &image2, double ht) {
+	
 	//convert first image to gray scale
 	cv::Mat img1;
 	cv::cvtColor(image1, img1, CV_RGB2GRAY);
@@ -92,35 +91,31 @@ double compareImagesSURF(cv::Mat &image1, cv::Mat &image2, double ht)
 	//calculate SURF features for the first image
 	detector.detect( img1, keyPoints1 );
 	extractor.compute( img1, keyPoints1, descriptors1 );
-
+	
 	//calculate SURF features for the second image
 	detector.detect( img2, keyPoints2 );
 	extractor.compute( img2, keyPoints2, descriptors2 );
 
 	//compare features
 	float result = FLT_MAX;
-	if (keyPoints1.size() > 0 && keyPoints2.size() > 0) {
+	if( keyPoints1.size() > 0 && keyPoints2.size() > 0 ) {
 		result = matchDescriptors(descriptors1, descriptors2);
 	}
-
+	
 	return result;
 }
 
-int main (int argc, char** argv)
-{
+int main (int argc, char** argv) {
 
-	if (argc != 4)
-	{
+	if( argc != 4 ) {
 		//try 100, 500 or 1000 for hessian threshold
-		cout<<"Usage: "<<argv[0]<<" <filename1> <filename2> <hessianThreshold>"<<endl;
+		cout << "Usage: "<<argv[0]<<" <filename1> <filename2> <hessianThreshold>"<<endl;
 		return EXIT_FAILURE;	
-	}
-	else
-	{	
+	} else {	
 		cv::Mat img1 = cv::imread(argv[1]);
 		cv::Mat img2 = cv::imread(argv[2]);
 		cv::waitKey(5000);
-		cout<<compareImagesSURF(img1, img2, atof(argv[3]))<<endl;
+		cout << compareImagesSURF(img1, img2, atof(argv[3]))<<endl;
 
 		return EXIT_SUCCESS;
 	}
