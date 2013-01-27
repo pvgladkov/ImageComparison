@@ -1,2 +1,2 @@
-SurfImageComparison
+Experiments with image processing
 ===================
