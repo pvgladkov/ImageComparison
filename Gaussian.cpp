@@ -29,9 +29,12 @@ Gaussian::~Gaussian() {
  */
 IplImage* Gaussian::gaussianBlur( IplImage* const img, double sigma ){
 	
+	// copy image
 	IplImage * img_copy = cvCloneImage(img);
+	
 	uchar * data = (uchar *)img_copy->imageData;
 	uchar * ori_data = (uchar *)img->imageData;
+	
 	int step_sz = img_copy->widthStep;
 
 	const int kernel_sz = (int)ceil(6*sigma);
@@ -53,12 +56,12 @@ IplImage* Gaussian::gaussianBlur( IplImage* const img, double sigma ){
 	}
 	
 	int channels = img_copy->nChannels;
-	for( int i = 0;i < img_copy->height;++i ) {
+	for( int i = 0; i < img_copy->height; ++i ) {
 
 		for( int j = 0; j < img_copy->width; ++j ) {
 			for( int k = 0; k < channels; ++k ) {
 				
-				double kernal_total = 0;
+				double kernel_total = 0;
 				for( int a = 0; a < kernel_sz; ++a ) {
 					for( int b = 0; b < kernel_sz; ++b ) {
 						int delta_j = b - center;
@@ -67,12 +70,12 @@ IplImage* Gaussian::gaussianBlur( IplImage* const img, double sigma ){
 							i + delta_i >= 0 && i + delta_i < img_copy->height &&
 							j + delta_j >= 0 && j + delta_j < img_copy->width
 						) {
-							kernal_total += kernel[a][b];
+							kernel_total += kernel[a][b];
 						}
 					}
 				}
 			
-				double compensation = 1.0 / kernal_total;
+				double compensation = 1.0 / kernel_total;
 				double new_value = 0;
 				for( int a = 0; a < kernel_sz; ++a ) {
 					for( int b = 0; b < kernel_sz; ++b ) {
