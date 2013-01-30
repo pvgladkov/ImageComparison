@@ -81,13 +81,14 @@ double KMeans::euclidean_distance(double a_1, double b_1,
 }
 
 void KMeans::clusterize(int &step) {
+	
     int flag = true;
     int id = 0;
     double sum = 0;
     double min_distance = 0;
     double *distance = new double[k];
     
-    while (flag) {
+    while( flag ) {
         step++;
 
         for (int j = 0; j < k; j++) {
@@ -156,7 +157,7 @@ void KMeans::output_data() {
     vector<int>::iterator p;
     fstream out_file("result.dat", ios::out);
 
-    for (int i = 0; i < k; i++) {
+    for( int i = 0; i < k; i++ ) {
         out_file << "> clustering result " << i << " "
                  << "size: " << clusters[i].size() << "\n\n";
 
@@ -166,8 +167,8 @@ void KMeans::output_data() {
                                   << point_set[*p][2] * MAXPIXEL << "\n";
         }
 
-        out_file << "\n";
-    }
+		out_file << "\n";
+	}
 
-    out_file.close();
+	out_file.close();
 }
