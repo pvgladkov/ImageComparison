@@ -3,11 +3,11 @@
  *
  * Created on 20 Январь 2013 г., 19:50
  */
-
+#include <opencv2/core/core.hpp>
 #ifndef CUSTOMCANNYDETECTOR_H
 #define	CUSTOMCANNYDETECTOR_H
 
-#define PI = 3.14
+#define PI 3.14
 
 typedef unsigned char uint8_t;
 
@@ -17,7 +17,9 @@ public:
 	CustomCannyDetector(const CustomCannyDetector& orig);
 	virtual ~CustomCannyDetector();
 	
-	cv::Mat processImage( const cv::Mat& image );
+	uint8_t* processImage( uint8_t* source_bitmap, unsigned int width,
+							unsigned int height, float sigma,
+							uint8_t lowThreshold, uint8_t highThreshold );
 private:
 
 	/**

@@ -37,15 +37,10 @@ inline void CustomCannyDetector::SetPixelValue(unsigned int x, unsigned int y,
 }
 
 
-cv::Mat CustomCannyDetector::processImage( const cv::Mat& image ) {
-	
-	uint8_t* source_bitmap;
-	unsigned int width;
-	unsigned int height;
-	float sigma;
-	uint8_t lowThreshold;
-	uint8_t highThreshold;
-	
+uint8_t* CustomCannyDetector::processImage( uint8_t* source_bitmap, unsigned int width,
+                                         unsigned int height, float sigma,
+                                         uint8_t lowThreshold, uint8_t highThreshold ) {
+
 	/*
 	 * Setting up image width and height in pixels.
 	 */
@@ -226,8 +221,7 @@ void CustomCannyDetector::GaussianBlur(float sigma)
 
 	for (int i = -signed_mask_halfsize; i <= signed_mask_halfsize; i++) {
 		for (int j = -signed_mask_halfsize; j <= signed_mask_halfsize; j++) {
-			gaussianMask[(i + signed_mask_halfsize) * mask_size + j + signed_mask_halfsize]
-				= (1 / (2 * PI * sigma * sigma)) * exp(-(i * i + j * j ) / (2 * sigma * sigma));
+			gaussianMask[(i + signed_mask_halfsize) * mask_size + j + signed_mask_halfsize] = (1 / (2 * PI * sigma * sigma)) * exp(-(i * i + j * j ) / (2 * sigma * sigma));
 		}
 	}
 
