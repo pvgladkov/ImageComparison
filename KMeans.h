@@ -12,7 +12,7 @@
 
 class KMeans {
 public:
-	KMeans( double **matrix, int &a, int &b, int &c );
+	KMeans( double** matrix, const int& a, const int& b, const int& c );
 	KMeans(const KMeans& orig);
 	virtual ~KMeans();
 	
@@ -23,9 +23,9 @@ public:
                               double a_2, double b_2,
                               double a_3, double b_3);
 
-    void update_centroid();
+    void updateCentroid();
 
-    void output_data();
+    void outputData();
 private:
 	
 	/**
@@ -42,12 +42,12 @@ private:
     int point_num;
     
     // all points extract from image
-    double **point_set;
+    double** point_set;
 
     // store centroid information B G R value
-    double **centroids;
+    double** centroids;
 
-    double **copy_centroids;
+    double** copy_centroids;
 
     // store cluster points
     std::vector< std::vector<int> > clusters;

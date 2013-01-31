@@ -15,7 +15,8 @@
 
 using namespace std;
 
-KMeans::KMeans(double **matrix, int &a, int &b, int &c) {
+KMeans::KMeans( double** matrix, const int& a, const int& b, const int& c ) {
+	
     int index;
     point_num = a;
     dimension = b;
@@ -54,19 +55,17 @@ KMeans::KMeans(const KMeans& orig) {
 }
 
 KMeans::~KMeans() {
-    for (int i = 0; i < point_num; i++) {
+	
+    for( int i = 0; i < point_num; i++ ) {
         delete [] point_set[i];
     }
     delete [] point_set;
 
-    for (int i = 0; i < k; i++) {
+    for( int i = 0; i < k; i++ ) {
         delete [] centroids[i];
+		delete [] copy_centroids[i];
     }
     delete [] centroids;
-
-    for (int i = 0; i < k; i++) {
-        delete [] copy_centroids[i];
-    }
     delete [] copy_centroids;
 }
 
@@ -80,21 +79,25 @@ double KMeans::euclidean_distance(double a_1, double b_1,
     return sqrt(distance);
 }
 
+/**
+ * 
+ * @param step
+ */
 void KMeans::clusterize(int &step) {
 	
-    int flag = true;
-    int id = 0;
-    double sum = 0;
+    bool flag = true;
+    int id;
+    double sum;
     double min_distance = 0;
-    double *distance = new double[k];
+    double* distance = new double[k];
     
     while( flag ) {
         step++;
 
-        for (int j = 0; j < k; j++) {
+        for( int j = 0; j < k; j++ ) {
             clusters[j].clear();
         }
-        for (int i = 0; i < point_num; i++) {
+        for( int i = 0; i < point_num; i++ ) {
             for (int j = 0; j < k; j++) {
                 distance[j] = euclidean_distance(
                                 point_set[i][0], centroids[j][0],
@@ -104,7 +107,7 @@ void KMeans::clusterize(int &step) {
         
             id = 0;
             min_distance = distance[0];
-            for (int j = 1; j < k; j++) {
+            for( int j = 1; j < k; j++ ) {
                 if (distance[j] < min_distance) {
                     min_distance = distance[j];
                     id = j;
@@ -114,45 +117,45 @@ void KMeans::clusterize(int &step) {
 			clusters[id].push_back(i);
         }
 
-        for (int i = 0; i < k; i++) {
-            for (int j = 0; j < dimension; j++) {
+        for( int i = 0; i < k; i++ ) {
+            for( int j = 0; j < dimension; j++ ) {
                 copy_centroids[i][j] = centroids[i][j];
             }
         }
 
-        update_centroid();
+        updateCentroid();
 
         sum = 0;
-        for (int i = 0; i < k; i++) {
-            for (int j = 0; j < dimension; j++) {
+        for( int i = 0; i < k; i++ ) {
+            for( int j = 0; j < dimension; j++ ) {
                 sum += copy_centroids[i][j] - centroids[i][j];
             }
         }
          
-        if (sum == 0)
+        if( sum == 0 ) {
             flag = false;
+		}
     }
     
-    output_data();
+    outputData();
 
     delete [] distance;
 }
 
-void KMeans::update_centroid() {
-    double sum = 0;
+void KMeans::updateCentroid() {
 
-    for (int d = 0; d < dimension; d++) {
-        for (int i = 0; i < k; i++) {
-            sum = 0;
-            for (int j = 0; j < clusters[i].size(); j++) {
+    for( int d = 0; d < dimension; d++ ) { // идем по каждому измерению
+        for( int i = 0; i < k; i++ ) { // по каждому кластеру
+            double sum = 0; // считаем сумму для каждого кластера
+            for( int j = 0; j < clusters[i].size(); j++ ) {
                 sum += point_set[clusters[i][j]][d];
             }
-            centroids[i][d] = sum / clusters[i].size();
+            centroids[i][d] = sum / clusters[i].size(); // новый центр кластера
         }
     }
 }
 
-void KMeans::output_data() {
+void KMeans::outputData() {
 	
     vector<int>::iterator p;
     fstream out_file("result.dat", ios::out);
