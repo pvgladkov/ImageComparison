@@ -18,20 +18,23 @@ public:
 	
 	void clusterize(int &step);
 
-    // calculation dissimilarity between points with euclidean disatnce
-    double euclidean_distance(double a_1, double b_1,
+private:
+	
+	bool isEnd();
+
+	// calculation dissimilarity between points with euclidean disatnce
+    double getDistance(double a_1, double b_1,
                               double a_2, double b_2,
                               double a_3, double b_3);
 
     void updateCentroid();
 
     void outputData();
-private:
 	
 	/**
 	 * кол-во кластеров
 	 */
-    int k;
+    int clustersCount;
 
     /**
 	 * размерность данных
