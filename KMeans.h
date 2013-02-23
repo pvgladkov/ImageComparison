@@ -22,7 +22,7 @@ private:
 	
 	bool isEnd();
 
-	// calculation dissimilarity between points with euclidean disatnce
+	// расстояние
     double getDistance(double a_1, double b_1,
                               double a_2, double b_2,
                               double a_3, double b_3);
@@ -41,18 +41,18 @@ private:
 	 */
     int dimension;
 
-    // the sum number of point
+    //
     int point_num;
     
-    // all points extract from image
+    // все точки изображения
     double** point_set;
 
-    // store centroid information B G R value
+    // данные о центрах
     double** centroids;
 
     double** copy_centroids;
 
-    // store cluster points
+    // точки кластеров
     std::vector< std::vector<int> > clusters;
 };
 
